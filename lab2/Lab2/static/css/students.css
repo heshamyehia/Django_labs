@@ -1,0 +1,85 @@
+/* Student-specific styles */
+
+.student-card {
+  position: relative;
+}
+
+.student-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.student-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.student-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.student-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.student-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.student-info-item {
+  padding: 0.75rem 0;
+}
+
+.student-info-label {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.85rem;
+}
+
+.student-info-value {
+  margin: 0;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.student-stats-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+
+.student-stats-card h2 {
+  color: white;
+}
+
+.student-stats-number {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.student-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.student-list-info {
+  flex: 1;
+}

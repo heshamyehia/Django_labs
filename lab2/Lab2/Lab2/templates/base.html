@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Django School{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/courses.css' %}">
+  <link rel="stylesheet" href="{% static 'css/students.css' %}">
+  <link rel="stylesheet" href="{% static 'css/instructors.css' %}">
+  {% block extra_css %}{% endblock %}
+  </style>
+</head>
+<body>
+  <!-- Modern Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="{% url 'student_list' %}" class="navbar-brand">🎓 Django School</a>
+      <div class="nav-links">
+        <a href="{% url 'student_list' %}">Students</a>
+        <a href="{% url 'course_list' %}">Courses</a>
+        <a href="{% url 'instructor_list' %}">Instructors</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="content-wrapper">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 Django School Management System. Built with ❤️ using Django.</p>
+  </footer>
+
+  <script>
+    // Add scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, index * 100);
+        }
+      });
+    }, observerOptions);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card, .grid > *');
+      cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+      });
+    });
+  </script>
+</body>
+</html>

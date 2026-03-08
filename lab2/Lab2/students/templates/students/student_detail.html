@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ student.first_name }} {{ student.last_name }}{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <a href="{% url 'student_list' %}" style="color: var(--primary); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;">
+    ← Back to Students
+  </a>
+</div>
+
+<div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2.5rem;">
+  <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; box-shadow: var(--shadow-xl);">
+    <img src="https://ui-avatars.com/api/?name={{ student.first_name }}+{{ student.last_name }}&size=160&background=random&bold=true" 
+         alt="{{ student.first_name }} {{ student.last_name }}" 
+         style="width: 100%; height: 100%; object-fit: cover;">
+  </div>
+  <div>
+    <h1 style="margin: 0 0 0.5rem 0;">{{ student.first_name }} {{ student.last_name }}</h1>
+    <p class="text-muted" style="margin: 0;">Student Profile</p>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+  <!-- Personal Information Card -->
+  <div class="card">
+    <h2 style="margin-top: 0; font-size: 1.25rem;">Personal Information</h2>
+    
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <div>
+        <p class="text-muted" style="margin: 0 0 0.25rem 0; font-size: 0.85rem;">First Name</p>
+        <p style="margin: 0; font-weight: 600; color: var(--gray-800);">{{ student.first_name }}</p>
+      </div>
+      
+      <div>
+        <p class="text-muted" style="margin: 0 0 0.25rem 0; font-size: 0.85rem;">Last Name</p>
+        <p style="margin: 0; font-weight: 600; color: var(--gray-800);">{{ student.last_name }}</p>
+      </div>
+      
+      <div>
+        <p class="text-muted" style="margin: 0 0 0.25rem 0; font-size: 0.85rem;">Email Address</p>
+        <p style="margin: 0; font-weight: 600; color: var(--primary);">{{ student.email }}</p>
+      </div>
+      
+      <div>
+        <p class="text-muted" style="margin: 0 0 0.25rem 0; font-size: 0.85rem;">Date of Birth</p>
+        <p style="margin: 0; font-weight: 600; color: var(--gray-800);">
+          {% if student.date_of_birth %}
+            {{ student.date_of_birth|date:"F d, Y" }}
+          {% else %}
+            <span style="color: var(--gray-400); font-style: italic;">Not provided</span>
+          {% endif %}
+        </p>
+      </div>
+      
+      <div>
+        <p class="text-muted" style="margin: 0 0 0.25rem 0; font-size: 0.85rem;">Enrollment Date</p>
+        <p style="margin: 0; font-weight: 600; color: var(--gray-800);">{{ student.enrolled_at|date:"F d, Y - H:i" }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Quick Stats Card -->
+  <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+    <h2 style="margin-top: 0; font-size: 1.25rem; color: white;">Quick Stats</h2>
+    
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div style="text-align: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.1); border-radius: 0.75rem; backdrop-filter: blur(10px);">
+        <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; opacity: 0.9;">Total Courses</p>
+        <p style="margin: 0; font-size: 3rem; font-weight: 700;">{{ student.courses.count }}</p>
+      </div>
+      
+      <div style="text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 0.75rem;">
+        <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Student ID</p>
+        <p style="margin: 0.25rem 0 0 0; font-size: 1.25rem; font-weight: 600;">#{{ student.id }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Enrolled Courses Section -->
+<div style="margin-top: 3rem;">
+  <h2>📚 Enrolled Courses</h2>
+  
+  {% if student.courses.all %}
+  <div class="grid">
+    {% for course in student.courses.all %}
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <!-- Course Thumbnail -->
+      <div style="position: relative; height: 140px; background: linear-gradient(135deg, var(--primary), var(--secondary)); overflow: hidden;">
+        <img src="{% static 'images/courses/' %}{{ course.get_image_filename }}" 
+             alt="{{ course.title }}" 
+             style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+        <div style="position: absolute; top: 0.75rem; right: 0.75rem;">
+          <span class="badge" style="background: rgba(255, 255, 255, 0.95); color: var(--primary);">Course #{{ course.id }}</span>
+        </div>
+      </div>
+      
+      <div style="padding: 1.25rem;"><h3 style="margin: 0 0 1rem 0; font-size: 1.15rem; color: var(--gray-800);">
+        {{ course.title }}
+      </h3>
+      
+      {% if course.instructor %}
+      <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem; margin-bottom: 1rem;">
+        <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; box-shadow: var(--shadow-sm);">
+          <img src="https://ui-avatars.com/api/?name={{ course.instructor.first_name }}+{{ course.instructor.last_name }}&size=80&background=6366f1&color=fff&bold=true" 
+               alt="{{ course.instructor }}" 
+               style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div>
+          <p class="text-muted" style="margin: 0; font-size: 0.8rem;">Instructor</p>
+          <p style="margin: 0; font-weight: 600; color: var(--gray-800); font-size: 0.95rem;">{{ course.instructor }}</p>
+        </div>
+      </div>
+      {% endif %}
+        
+        <a href="{% url 'course_detail' course.pk %}" class="btn btn-secondary" style="width: 100%; text-align: center;">View Course →</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card" style="text-align: center; padding: 3rem 2rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+    <p style="color: var(--gray-600); margin: 0;">Not enrolled in any courses yet.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

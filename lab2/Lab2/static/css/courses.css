@@ -1,0 +1,132 @@
+/* Course-specific styles */
+
+.course-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.course-image {
+  position: relative;
+  height: 180px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  overflow: hidden;
+}
+
+.course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.course-card:hover .course-image img {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.course-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.course-content {
+  padding: 1.5rem;
+}
+
+.course-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  color: var(--gray-800);
+  line-height: 1.4;
+}
+
+.course-description {
+  margin: 0;
+  color: var(--gray-600);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.course-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.course-instructor,
+.course-students {
+  flex: 1;
+}
+
+.course-hero {
+  position: relative;
+  height: 300px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-xl);
+}
+
+.course-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.course-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+
+.course-hero-content {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  color: white;
+}
+
+.course-hero-title {
+  margin: 0.5rem 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.course-thumbnail {
+  position: relative;
+  height: 140px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  overflow: hidden;
+}
+
+.course-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.course-checkbox-item {
+  width: 45px;
+  height: 45px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.course-checkbox-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

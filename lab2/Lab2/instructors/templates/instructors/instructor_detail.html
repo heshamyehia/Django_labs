@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ instructor.first_name }} {{ instructor.last_name }}{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <a href="{% url 'instructor_list' %}" style="color: var(--primary); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;">
+    ← Back to Instructors
+  </a>
+</div>
+
+<div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2.5rem;">
+  <div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; box-shadow: var(--shadow-xl);">
+    <img src="https://ui-avatars.com/api/?name={{ instructor.first_name }}+{{ instructor.last_name }}&size=200&background=6366f1&color=fff&bold=true" 
+         alt="{{ instructor.first_name }} {{ instructor.last_name }}" 
+         style="width: 100%; height: 100%; object-fit: cover;">
+  </div>
+  <div>
+    <h1 style="margin: 0 0 0.5rem 0;">{{ instructor.first_name }} {{ instructor.last_name }}</h1>
+    <p class="text-muted" style="margin: 0 0 0.5rem 0;">Instructor Profile</p>
+    <p style="margin: 0; color: var(--primary); font-weight: 500;">📧 {{ instructor.email }}</p>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+  <!-- Bio Card -->
+  <div class="card">
+    <h2 style="margin-top: 0; font-size: 1.25rem;">About</h2>
+    
+    {% if instructor.bio %}
+    <p style="line-height: 1.8; color: var(--gray-700);">
+      {{ instructor.bio }}
+    </p>
+    {% else %}
+    <p style="color: var(--gray-400); font-style: italic;">No bio provided yet.</p>
+    {% endif %}
+  </div>
+  
+  <!-- Stats Card -->
+  <div>
+    <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; margin-bottom: 1.5rem;">
+      <h2 style="margin: 0 0 1.5rem 0; font-size: 1.25rem; color: white;">Statistics</h2>
+      
+      <div style="text-align: center; padding: 2rem 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 0.75rem; backdrop-filter: blur(10px); margin-bottom: 1.5rem;">
+        <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; opacity: 0.9;">Courses Teaching</p>
+        <p style="margin: 0; font-size: 3.5rem; font-weight: 700;">{{ instructor.courses.count }}</p>
+      </div>
+      
+      <div style="display: grid; gap: 0.75rem;">
+        <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border-radius: 0.5rem;">
+          <span style="opacity: 0.9;">Instructor ID</span>
+          <span style="font-weight: 600;">#{{ instructor.id }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border-radius: 0.5rem;">
+          <span style="opacity: 0.9;">Hired Date</span>
+          <span style="font-weight: 600;">{{ instructor.hired_date|date:"M Y" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Teaching Courses Section -->
+<div>
+  <h2>📚 Teaching Courses ({{ instructor.courses.count }})</h2>
+  
+  {% if instructor.courses.all %}
+  <div class="grid">
+    {% for course in instructor.courses.all %}
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <!-- Course Thumbnail -->
+      <div style="position: relative; height: 140px; background: linear-gradient(135deg, var(--primary), var(--secondary)); overflow: hidden;">
+        <img src="{% static 'images/courses/' %}{{ course.get_image_filename }}" 
+             alt="{{ course.title }}" 
+             style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+        <div style="position: absolute; top: 0.75rem; left: 0.75rem;">
+          <span class="badge" style="background: rgba(255, 255, 255, 0.95); color: var(--primary);">Course #{{ course.id }}</span>
+        </div>
+        <div style="position: absolute; top: 0.75rem; right: 0.75rem;">
+          <span class="badge badge-primary" style="background: rgba(255, 255, 255, 0.2); color: white; backdrop-filter: blur(10px);">
+            {{ course.students.count }} student{{ course.students.count|pluralize }}
+          </span>
+        </div>
+      </div>
+      
+      <div style="padding: 1.25rem;">
+        <h3 style="margin: 0 0 1rem 0; font-size: 1.15rem; color: var(--gray-800); line-height: 1.4;">
+          {{ course.title }}
+        </h3>
+      
+      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <div style="flex: 1; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem; text-align: center;">
+          <p class="text-muted" style="margin: 0 0 0.25rem 0; font-size: 0.8rem;">Students</p>
+          <p style="margin: 0; font-size: 1.5rem; font-weight: 700; color: var(--primary);">{{ course.students.count }}</p>
+        </div>
+        <div style="flex: 1; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem; text-align: center;">
+          <p class="text-muted" style="margin: 0 0 0.25rem 0; font-size: 0.8rem;">Created</p>
+          <p style="margin: 0; font-weight: 600; color: var(--gray-700); font-size: 0.9rem;">{{ course.created_at|date:"M Y" }}</p>
+        </div>
+      </div>
+        
+        <a href="{% url 'course_detail' course.pk %}" class="btn" style="width: 100%; text-align: center;">View Course →</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card" style="text-align: center; padding: 3rem 2rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+    <p style="color: var(--gray-600); margin: 0;">Not teaching any courses yet.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

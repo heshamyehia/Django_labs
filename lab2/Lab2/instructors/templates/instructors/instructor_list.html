@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}All Instructors{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <h1 style="margin: 0;">👨‍🏫 Instructors</h1>
+  <a href="{% url 'instructor_create' %}" class="btn">+ Add New Instructor</a>
+</div>
+
+{% if instructors %}
+<div class="grid">
+  {% for instructor in instructors %}
+  <div class="card">
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+      <div style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex-shrink: 0; box-shadow: var(--shadow);">
+        <img src="https://ui-avatars.com/api/?name={{ instructor.first_name }}+{{ instructor.last_name }}&size=120&background=6366f1&color=fff&bold=true" 
+             alt="{{ instructor.first_name }} {{ instructor.last_name }}" 
+             style="width: 100%; height: 100%; object-fit: cover;">
+      </div>
+      <div style="flex: 1;">
+        <h3 style="margin: 0 0 0.25rem 0; font-size: 1.25rem; color: var(--gray-800);">
+          {{ instructor.first_name }} {{ instructor.last_name }}
+        </h3>
+        <p class="text-muted" style="margin: 0; font-size: 0.9rem;">Instructor #{{ instructor.id }}</p>
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 1rem;">
+      <p style="margin: 0.5rem 0; color: var(--gray-600); font-size: 0.95rem;">
+        📧 {{ instructor.email }}
+      </p>
+      <p style="margin: 0.5rem 0; color: var(--gray-600); font-size: 0.95rem;">
+        📅 Hired: {{ instructor.hired_date|date:"M d, Y" }}
+      </p>
+    </div>
+    
+    {% if instructor.bio %}
+    <div style="margin-top: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 0.5rem;">
+      <p style="margin: 0; color: var(--gray-600); font-size: 0.9rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+        {{ instructor.bio }}
+      </p>
+    </div>
+    {% endif %}
+    
+    <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--gray-200);">
+      <span class="badge badge-primary" style="flex: 1; text-align: center;">
+        📚 {{ instructor.courses.count }} course{{ instructor.courses.count|pluralize }}
+      </span>
+      <a href="{% url 'instructor_detail' instructor.pk %}" class="btn" style="flex: 2; text-align: center;">View Profile →</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 4rem 2rem;">
+  <div style="font-size: 4rem; margin-bottom: 1rem;">👨‍🏫</div>
+  <h2 style="color: var(--gray-600);">No instructors yet</h2>
+  <p class="text-muted" style="margin-bottom: 1.5rem;">Get started by adding your first instructor</p>
+  <a href="{% url 'instructor_create' %}" class="btn">+ Add First Instructor</a>
+</div>
+{% endif %}
+{% endblock %}

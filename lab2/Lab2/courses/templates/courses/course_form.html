@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Course{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <a href="{% url 'course_list' %}" style="color: var(--primary); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;">
+    ← Back to Courses
+  </a>
+</div>
+
+<div style="max-width: 700px; margin: 0 auto;">
+  <div style="text-align: center; margin-bottom: 2.5rem;">
+    <div style="display: inline-flex; width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); align-items: center; justify-content: center; margin-bottom: 1rem; box-shadow: var(--shadow-lg);">
+      <span style="font-size: 2.5rem;">📚</span>
+    </div>
+    <h1 style="margin: 0 0 0.5rem 0;">Add New Course</h1>
+    <p class="text-muted" style="margin: 0;">Create a new course for your students</p>
+  </div>
+
+  <div class="card" style="padding: 2.5rem;">
+    <form method="post">
+      {% csrf_token %}
+      
+      <div style="margin-bottom: 1.5rem;">
+        <label for="title">Course Title *</label>
+        <input type="text" id="title" name="title" required placeholder="e.g., Introduction to Python Programming">
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <label for="description">Course Description</label>
+        <textarea id="description" name="description" rows="5" placeholder="Describe what students will learn in this course..."></textarea>
+        <p class="text-muted" style="margin-top: 0.5rem; font-size: 0.85rem;">ℹ️ Provide a detailed description to help students understand the course content</p>
+      </div>
+      
+      <div style="margin-bottom: 2rem;">
+        <label for="instructor">Assign Instructor (optional)</label>
+        {% if instructors %}
+        <div style="position: relative;">
+          <select id="instructor" name="instructor" style="margin-bottom: 0; padding-left: 3rem;">
+            <option value="">-- Select an instructor --</option>
+            {% for instructor in instructors %}
+            <option value="{{ instructor.id }}\" data-avatar="https://ui-avatars.com/api/?name={{ instructor.first_name }}+{{ instructor.last_name }}&size=40&background=6366f1&color=fff&bold=true">
+              👨‍🏫 {{ instructor.first_name }} {{ instructor.last_name }}
+              {% if instructor.courses.count %}
+              ({{ instructor.courses.count }} course{{ instructor.courses.count|pluralize }})
+              {% endif %}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <p class="text-muted" style="margin-top: 0.5rem; font-size: 0.85rem;">ℹ️ You can assign or change the instructor later</p>
+        {% else %}
+        <div style="padding: 2rem; text-align: center; background: var(--gray-50); border-radius: 0.75rem; border: 2px dashed var(--gray-300);">
+          <p style="margin: 0 0 1rem 0; color: var(--gray-600);">No instructors available yet.</p>
+          <a href="{% url 'instructor_create' %}" class="btn btn-secondary" style="font-size: 0.9rem;">Create an Instructor First</a>
+        </div>
+        {% endif %}
+      </div>
+      
+      <div style="display: flex; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
+        <button type="submit" class="btn" style="flex: 2;">
+          ✓ Create Course
+        </button>
+        <a href="{% url 'course_list' %}" class="btn btn-secondary" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+  
+  <div class="card" style="margin-top: 2rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05)); border: 1px solid var(--primary-light);">
+    <h3 style="margin: 0 0 1rem 0; font-size: 1rem; color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem;">
+      <span>💡</span> Quick Tips
+    </h3>
+    <ul style="margin: 0; padding-left: 1.5rem; color: var(--gray-700); line-height: 1.8;">
+      <li>Choose a clear, descriptive title for your course</li>
+      <li>Add a detailed description to attract students</li>
+      <li>You can assign or change the instructor later</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
